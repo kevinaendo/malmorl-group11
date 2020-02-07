@@ -46,58 +46,6 @@ else:
 class TabQAgent(object):
     """Tabular Q-learning agent for discrete state/action spaces."""
 
-    missionXML = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
-  <About>
-    <Summary>Cliff walking mission based on Sutton and Barto.</Summary>
-  </About>
-
-  <ServerSection>
-    <ServerInitialConditions>
-        <Time><StartTime>1</StartTime></Time>
-    </ServerInitialConditions>
-    <ServerHandlers>
-      <FlatWorldGenerator generatorString="3;7,220*1,5*3,2;3;,biome_1"/>
-<!--       <FileWorldGenerator src="/Users/kevinendo/Desktop/CS175/malmorl-group11/maze"/>
- -->
-      <DrawingDecorator>
-        <!-- coordinates for cuboid are inclusive -->
-        <DrawCuboid x1="0" y1="46" z1="0" x2="7" y2="50" z2="6" type="air" />            <!-- limits of our arena -->
-        <DrawCuboid x1="0" y1="45" z1="0" x2="7" y2="45" z2="6" type="bedrock" />    
-        <DrawCuboid x1="0" y1="45" z1="6" x2="7" y2="45" z2="6" type="lava" />  
-               <!-- lava floor -->
-<!--         <DrawCuboid x1="1"  y1="45" z1="1"  x2="3" y2="45" z2="17" type="lava" />  -->     <!-- floor of the arena -->
-        <DrawBlock x="4"  y="45" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="4"  y="45" z="7" type="diamond_block" />     <!-- the destination marker -->
-      </DrawingDecorator>
-      <ServerQuitFromTimeUp timeLimitMs="20000"/>
-      <ServerQuitWhenAnyAgentFinishes/>
-    </ServerHandlers>
-  </ServerSection>
-
-  <AgentSection mode="Survival">
-    <Name>Cristina</Name>
-    <AgentStart>
-      <Placement x="4.5" y="46.0" z="1.5" pitch="30" yaw="0"/>
- <!--  <Placement x="206.760" y="70.00000" z="200.669" yaw="-90"/> -->
-    </AgentStart>
-    <AgentHandlers>
-      <DiscreteMovementCommands/>
-      <ObservationFromFullStats/>
-      <RewardForTouchingBlockType>
-        <Block reward="-100.0" type="lava" behaviour="onceOnly"/>
-        <Block reward="100.0" type="diamond_block" behaviour="onceOnly"/>
-      </RewardForTouchingBlockType>
-      <RewardForSendingCommand reward="-1" />
-      <AgentQuitFromTouchingBlockType>
-          <Block type="lava" />
-          <Block type="diamond_block" />
-      </AgentQuitFromTouchingBlockType>
-    </AgentHandlers>
-  </AgentSection>
-</Mission>'''
-
     def __init__(self):
         self.epsilon = 0.01 # chance of taking a random action instead of the best
 
@@ -109,7 +57,7 @@ class TabQAgent(object):
         self.logger.handlers = []
         self.logger.addHandler(logging.StreamHandler(sys.stdout))
 
-        self.actions = ["movesouth 1;jumpsouth 1;movesouth 1", "movenorth 1", "movewest 1", "moveeast 1"]
+        self.actions = ["jumpsouth 1;movesouth 1", "movesouth 1", "movenorth 1", "movewest 1", "moveeast 1"]
         self.q_table = {}
         self.canvas = None
         self.root = None
@@ -316,7 +264,8 @@ if agent_host.receivedArgument("help"):
     exit(0)
 
 # -- set up the mission -- #
-with open(missionXML, 'r') as f:
+mission_file = './malmo.xml'
+with open(mission_file, 'r') as f:
     print("Loading mission from %s" % mission_file)
     mission_xml = f.read()
     my_mission = MalmoPython.MissionSpec(mission_xml, True)
