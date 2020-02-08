@@ -64,27 +64,26 @@ class TabQAgent(object):
 
     def updateQTable( self, reward, current_state ):
         """Change q_table to reflect what we have learnt."""
-        
-        # retrieve the old action value from the Q-table (indexed by the previous state and the previous action)
+        ALPHA = 0.05
+        GAMMA = 0.8
+
+        max_reward = max(self.q_table[current_state])
+
         old_q = self.q_table[self.prev_s][self.prev_a]
-        
-        # TODO: what should the new action value be?
-        new_q = reward
-        
-        # assign the new action value to the Q-table
+        new_q = old_q + ALPHA * (reward + GAMMA * max_reward - old_q)
         self.q_table[self.prev_s][self.prev_a] = new_q
         
     def updateQTableFromTerminatingState( self, reward ):
         """Change q_table to reflect what we have learnt, after reaching a terminal state."""
-        
-        # retrieve the old action value from the Q-table (indexed by the previous state and the previous action)
+        ALPHA = 0.05
+        GAMMA = 0.8
+
+        max_reward = max(self.q_table[self.prev_s])
+
         old_q = self.q_table[self.prev_s][self.prev_a]
-        
-        # TODO: what should the new action value be?
-        new_q = reward
-        
-        # assign the new action value to the Q-table
+        new_q = old_q + ALPHA * (reward + GAMMA * max_reward - old_q)
         self.q_table[self.prev_s][self.prev_a] = new_q
+
         
     def act(self, world_state, agent_host, current_r ):
         """take 1 action in response to the current world state"""
@@ -114,6 +113,7 @@ class TabQAgent(object):
             self.logger.info("Random action: %s" % self.actions[a])
         else:
             m = max(self.q_table[current_s])
+
             self.logger.debug("Current values: %s" % ",".join(str(x) for x in self.q_table[current_s]))
             l = list()
             for x in range(0, len(self.actions)):
