@@ -52,10 +52,10 @@
       <RewardForTouchingBlockType>
         <Block reward="-100.0" type="lava" behaviour="onceOnly"/>
         <Block reward="-5.0" type="cobblestone"/>
-        <Block reward="10.0" type="iron_block"/>
-        <Block reward="10.0" type="gold_block"/>
-        <Block reward="10.0" type="stone_pressure_plate"/>
-        <Block reward="5.0" type="lapis_block"/>
+        <Block reward="0.0" type="iron_block"/>
+        <Block reward="0.0" type="gold_block"/>
+        <Block reward="0.0" type="stone_pressure_plate"/>
+        <Block reward="0.0" type="lapis_block"/>
         <Block reward="100.0" type="diamond_block" behaviour="onceOnly"/>
       </RewardForTouchingBlockType>
       <RewardForSendingCommand reward="-2" />
