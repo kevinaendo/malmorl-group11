@@ -269,7 +269,7 @@ if agent_host.receivedArgument("help"):
 	exit(0)
 
 # -- set up the mission -- #
-mission_file = './cs175_flatQ2.xml'
+mission_file = './malmo.xml'
 with open(mission_file, 'r') as f:
 	print("Loading mission from %s" % mission_file)
 	mission_xml = f.read()
