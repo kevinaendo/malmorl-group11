@@ -96,8 +96,7 @@ class TabQAgent(object):
             self.logger.error("Incomplete observation received: %s" % obs_text)
             return 0
         current_s = "%d:%d" % (int(obs[u'XPos']), int(obs[u'ZPos']))
-        print(current_s)
-        print(self.q_table)
+
         self.logger.debug("State: %s (x = %.2f, z = %.2f)" % (current_s, float(obs[u'XPos']), float(obs[u'ZPos'])))
         if current_s not in self.q_table:
             self.q_table[current_s] = ([0] * len(self.actions))
