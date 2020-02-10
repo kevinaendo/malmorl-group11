@@ -1,6 +1,8 @@
 # malmorl-group11
 Minecraft Malmo project for CS175
 
+Website: https://czheng98.wixsite.com/cs175
+
 
 How to run Minecraft Malmo project:
 
