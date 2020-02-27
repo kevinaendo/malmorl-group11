@@ -315,8 +315,8 @@ class MinecraftEnv(gym.Env):
 	def _get_observation(self, world_state):
 		if world_state.number_of_observations_since_last_state > 0:
 			missed = world_state.number_of_observations_since_last_state - len(world_state.observations) - self.skip_steps
-			if missed > 0:
-				logger.warn("Agent missed %d observation(s).", missed)
+#			if missed > 0:
+#				logger.warn("Agent missed %d observation(s).", missed)
 			assert len(world_state.observations) == 1
 			return json.loads(world_state.observations[0].text)
 		else:

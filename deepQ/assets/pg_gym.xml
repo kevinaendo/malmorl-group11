@@ -5,6 +5,11 @@
     <Summary>Get to the Diamond Block</Summary>
   </About>
 
+  <ModSettings>
+      <!--MsPerTick>10</MsPerTick-->
+      <PrioritiseOffscreenRendering>true</PrioritiseOffscreenRendering>
+  </ModSettings>
+
   <ServerSection>
     <ServerInitialConditions>
         <Time><StartTime>1</StartTime></Time>
@@ -34,7 +39,7 @@
         <DrawBlock x="5"  y="45" z="3" type="cobblestone" />
         <DrawBlock x="4"  y="45" z="7" type="diamond_block" />     <!-- the destination marker -->
       </DrawingDecorator>
-      <ServerQuitFromTimeUp timeLimitMs="20000"/>
+      <ServerQuitFromTimeUp timeLimitMs="30000"/>
       <ServerQuitWhenAnyAgentFinishes/>
     </ServerHandlers>
   </ServerSection>
