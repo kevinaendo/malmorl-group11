@@ -22,12 +22,22 @@ import torch.nn.functional as F
 from torch.distributions import Categorical
 print("PyTorch:\t{}".format(torch.__version__))
 
+import csv
+
 env = gym.make('MinecraftEnv-v0')
-env.init(client_pool=[("localhost", 10000)], start_minecraft=False, allowDiscreteMovement=["move", "turn"], videoResolution=False)
+env.init(client_pool=[("localhost", 10000)], start_minecraft=False, 
+		 allowDiscreteMovement=["move", "turn", "jump"], videoResolution=False)
 
 # Hyperparameters
-learning_rate = 0.01
+learning_rate = 0.03
 gamma = 0.99
+
+# Results write file 
+f = open("results.csv", mode="w")
+writer = csv.writer(f, delimiter=",", quotechar="\"", quoting=csv.QUOTE_MINIMAL)
+
+writer.writerow([learning_rate])
+writer.writerow([gamma])
 
 class Policy(nn.Module):
 	def __init__(self):
@@ -62,13 +72,20 @@ class Policy(nn.Module):
 		return model(x)
 
 
+prev_action = -1
 def predict(state):
 	# Select an action (0 or 1) by running policy model
 	# and choosing based on the probabilities in state
 	state = torch.from_numpy(state.flatten()).type(torch.FloatTensor)
 	action_probs = policy(state)
 	distribution = Categorical(action_probs)
-	action = distribution.sample()
+
+	global prev_action 
+	if prev_action == 4: 
+		action = torch.tensor(0)
+	else:
+		action = distribution.sample()
+	prev_action = action
 
 	# Add log probability of our chosen action to our history
 	policy.episode_actions = torch.cat([
@@ -112,6 +129,7 @@ def train(episodes):
 	for episode in range(episodes):
 		# Reset environment and record the starting state
 		state = env.reset()
+		cum_reward = 0
 
 		for time in range(1000):
 			action = predict(state)
@@ -121,9 +139,11 @@ def train(episodes):
 
 			# Step through environment using chosen action
 			state, reward, done, _ = env.step(action.item())
+			cum_reward += reward
 
 			# Save reward
 			policy.episode_rewards.append(reward)
+
 			if done:
 				break
 
@@ -132,6 +152,9 @@ def train(episodes):
 		# Calculate score to determine when the environment has been solved
 		scores.append(time)
 		mean_score = np.mean(scores[-100:])
+
+		print("Episode {} Cumulative Reward = {}".format(episode, cum_reward))
+		writer.writerow([cum_reward])
 
 		if episode % 50 == 0:
 			print('Episode {}\tAverage length (last 100 episodes): {:.2f}'.format(
@@ -147,6 +170,9 @@ def train(episodes):
 policy = Policy()
 optimizer = optim.Adam(policy.parameters(), lr=learning_rate)
 train(episodes=1000)
+
+# Close write file
+f.close()
 
 # number of episodes for rolling average
 window = 50
@@ -169,6 +195,7 @@ ax2.set_ylabel('Episode Length')
 
 fig.tight_layout(pad=2)
 plt.show()
+
 
 
 """
