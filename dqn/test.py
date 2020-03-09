@@ -97,7 +97,9 @@ class DQN(nn.Module):
 		super(DQN, self).__init__()
 		# state_space = env.observation_space.shape[0]
 		obs_shape = env.observation_space.shape
-		state_space = (obs_shape[0] * obs_shape[1] * obs_shape[2])
+		# TODO: HERE
+#		state_space = (obs_shape[0] * obs_shape[1] * obs_shape[2])
+		state_space = (obs_shape[0] * obs_shape[1])
 		action_space = env.action_space.n
 
 		global n_actions
