@@ -44,10 +44,10 @@ plt.ion()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Hyperparameters
-learning_rate = 0.03
+learning_rate = 0.3
 GAMMA = 0.99
 REWARD_THRESH = 85
-BATCH_SIZE = 128
+BATCH_SIZE = 8
 EPS_START = 0.9
 EPS_END = 0.05
 EPS_DECAY = 200
@@ -55,7 +55,7 @@ TARGET_UPDATE = 10
 NUM_EPISODES = 3000
 
 # Results write file 
-FILE_NAME = "results2.csv"
+FILE_NAME = "results3.csv"
 f = open(FILE_NAME, mode="w")
 writer = csv.writer(f, delimiter=",", quotechar="\"", quoting=csv.QUOTE_MINIMAL)
 
