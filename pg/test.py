@@ -29,11 +29,11 @@ env.init(client_pool=[("localhost", 10000)], start_minecraft=False,
 		 allowDiscreteMovement=["move", "turn", "jump"], videoResolution=False)
 
 # Hyperparameters
-learning_rate = 0.03
+learning_rate = 0.7
 gamma = 0.99
 
 # Results write file 
-f = open("results.csv", mode="w")
+f = open("results4.csv", mode="w")
 writer = csv.writer(f, delimiter=",", quotechar="\"", quoting=csv.QUOTE_MINIMAL)
 
 writer.writerow([learning_rate])
@@ -169,7 +169,7 @@ def train(episodes):
 
 policy = Policy()
 optimizer = optim.Adam(policy.parameters(), lr=learning_rate)
-train(episodes=1000)
+train(episodes=10000)
 
 # Close write file
 f.close()
